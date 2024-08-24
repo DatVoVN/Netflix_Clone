@@ -77,7 +77,7 @@ export async function login(req, res) {
         .json({ success: false, message: "Invalid credentials" })
     }
     const isPasswordCorrect = await bycryptjs.compare(password, user.password)
-    if (isPasswordCorrect) {
+    if (!isPasswordCorrect) {
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" })
@@ -86,7 +86,7 @@ export async function login(req, res) {
     res.status(201).json({
       success: true,
       user: {
-        ...newUser._doc,
+        ...user._doc,
         password: "",
       },
     })
